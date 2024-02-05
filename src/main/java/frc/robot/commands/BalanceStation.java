@@ -3,9 +3,9 @@ package frc.robot.commands;
 import frc.robot.subsystems.Drivetrain;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 
-public class BalanceStation extends CommandBase {
+public class BalanceStation extends Command {
 	private Drivetrain drivetrain;
 
 	public BalanceStation() {

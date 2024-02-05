@@ -1,11 +1,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import java.util.function.DoubleSupplier;
 import frc.robot.subsystems.Drivetrain;
 
-public class DriveControl extends CommandBase {
+public class DriveControl extends Command {
 	private final Drivetrain drivetrain;
 
 	private final DoubleSupplier translationXSupplier;
@@ -26,15 +26,17 @@ public class DriveControl extends CommandBase {
 	public void execute() {
 
 		// // robot-oriented drive
-		drivetrain.drive(new ChassisSpeeds(translationXSupplier.getAsDouble(), translationYSupplier.getAsDouble(),
-				rotationSupplier.getAsDouble()));
-		// drivetrain.drive(
-		// ChassisSpeeds.fromFieldRelativeSpeeds(
-		// translationXSupplier.getAsDouble(),
-		// translationYSupplier.getAsDouble(),
-		// rotationSupplier.getAsDouble(),
-		// drivetrain.getGyroscopeRotation())
-		// );
+		// drivetrain.drive(new ChassisSpeeds(translationXSupplier.getAsDouble(), translationYSupplier.getAsDouble(),
+		// 		rotationSupplier.getAsDouble()));
+
+
+		drivetrain.drive(
+		ChassisSpeeds.fromFieldRelativeSpeeds(
+			translationXSupplier.getAsDouble(),
+			translationYSupplier.getAsDouble(),
+			rotationSupplier.getAsDouble(),
+			drivetrain.getGyroscopeRotation())
+		);
 	}
 
 	@Override

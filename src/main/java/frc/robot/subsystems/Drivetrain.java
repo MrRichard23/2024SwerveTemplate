@@ -1,26 +1,10 @@
 package frc.robot.subsystems;
 
-import static frc.robot.util.Constants.DrivetrainMotors.BACK_LEFT_MODULE_DRIVE_MOTOR;
-import static frc.robot.util.Constants.DrivetrainMotors.BACK_LEFT_MODULE_STEER_ENCODER;
-import static frc.robot.util.Constants.DrivetrainMotors.BACK_LEFT_MODULE_STEER_MOTOR;
-import static frc.robot.util.Constants.DrivetrainMotors.BACK_LEFT_MODULE_STEER_OFFSET;
-import static frc.robot.util.Constants.DrivetrainMotors.BACK_RIGHT_MODULE_DRIVE_MOTOR;
-import static frc.robot.util.Constants.DrivetrainMotors.BACK_RIGHT_MODULE_STEER_ENCODER;
-import static frc.robot.util.Constants.DrivetrainMotors.BACK_RIGHT_MODULE_STEER_MOTOR;
-import static frc.robot.util.Constants.DrivetrainMotors.BACK_RIGHT_MODULE_STEER_OFFSET;
-import static frc.robot.util.Constants.DrivetrainMotors.FRONT_LEFT_MODULE_DRIVE_MOTOR;
-import static frc.robot.util.Constants.DrivetrainMotors.FRONT_LEFT_MODULE_STEER_ENCODER;
-import static frc.robot.util.Constants.DrivetrainMotors.FRONT_LEFT_MODULE_STEER_MOTOR;
-import static frc.robot.util.Constants.DrivetrainMotors.FRONT_LEFT_MODULE_STEER_OFFSET;
-import static frc.robot.util.Constants.DrivetrainMotors.FRONT_RIGHT_MODULE_DRIVE_MOTOR;
-import static frc.robot.util.Constants.DrivetrainMotors.FRONT_RIGHT_MODULE_STEER_ENCODER;
-import static frc.robot.util.Constants.DrivetrainMotors.FRONT_RIGHT_MODULE_STEER_MOTOR;
-import static frc.robot.util.Constants.DrivetrainMotors.FRONT_RIGHT_MODULE_STEER_OFFSET;
-import static frc.robot.util.Constants.DrivetrainSpecs.DRIVETRAIN_TRACKWIDTH_METERS;
-import static frc.robot.util.Constants.DrivetrainSpecs.DRIVETRAIN_WHEELBASE_METERS;
-import static frc.robot.util.Constants.DrivetrainSpecs.MAX_VELOCITY_METERS_PER_SECOND;
-import static frc.robot.util.Constants.DrivetrainSpecs.MAX_VOLTAGE;
+import static frc.robot.util.Constants.DrivetrainMotors.*;
+import static frc.robot.util.Constants.DrivetrainSpecs.*;
 
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 // import com.swervedrivespecialties.swervelib.Mk4iSwerveModuleHelper;
 // import com.swervedrivespecialties.swervelib.Mk4iSwerveModuleHelper;
@@ -66,18 +50,21 @@ public class Drivetrain extends SubsystemBase {
 	private PIDController chargeStationController;
 
 	private static Drivetrain drivetrain;
-
+	public TalonFX reference;
+	
 	public Drivetrain() {
+		reference = new TalonFX(FRONT_LEFT_MODULE_STEER_MOTOR);
 		navX = new AHRS(SerialPort.Port.kMXP);
+		
 		driveKinematics = new SwerveDriveKinematics(
 				// Front left
-				new Translation2d(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0),
-				// Front right
 				new Translation2d(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0),
+				// Front right
+				new Translation2d(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0),
 				// Back left
-				new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0),
+				new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0),
 				// Back right
-				new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0));
+				new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0));
 
 		chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
@@ -241,13 +228,13 @@ public class Drivetrain extends SubsystemBase {
 		SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
 
 		frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
-				states[0].angle.getRadians());
+				states[0].angle.getRadians()+Math.toRadians(90));
 		frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
-				states[1].angle.getRadians());
+				states[2].angle.getRadians()+Math.toRadians(90));
 		backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
-				states[2].angle.getRadians());
+				states[1].angle.getRadians()+Math.toRadians(90));
 		backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
-				states[3].angle.getRadians());
+				states[3].angle.getRadians()+Math.toRadians(90));
 	}
 
 	public double getCompass() {
@@ -284,7 +271,10 @@ public class Drivetrain extends SubsystemBase {
 		SwerveModuleState[] states = driveKinematics.toSwerveModuleStates(chassisSpeeds);
 		setModuleStates(states);
 
-		Shuffleboard.getTab("dt").add(drivetrain);
+		SmartDashboard.putNumber("referenceMotorInput", reference.get());
+
+		// Shuffleboard.getTab("dt").add(drivetrain);
+		
 	}
 
 	public static Drivetrain getInstance() {

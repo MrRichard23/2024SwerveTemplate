@@ -6,9 +6,10 @@ import edu.wpi.first.math.util.Units;
 
 
 
+
 public final class Constants {
 	public static final class OperatorConstants {
-		public static final int JOYSTICK_PORT = 0;
+		public static final int JOYSTICK_PORT = 1;
 		public static final int CONTROLLER_PORT = 2;
 
 		public static final int RESET_GYRO_BUTTON = 1; // on joystick 0
@@ -16,34 +17,33 @@ public final class Constants {
 
 	public static final class DrivetrainMotors {
 		// Front Left
-		public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 5;
-		public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 7;
-		public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 8;
-		public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(335);
+		public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 2;
+		public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 1;
+		public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 11;
+		public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(-313+90);
 		// Front Right
 		public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 6;
 		public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 3;
 		public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 9;
-		public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(134);
+		public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(65);
 		// Back Left
 		public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 4;
 		public static final int BACK_LEFT_MODULE_STEER_MOTOR = 0;
 		public static final int BACK_LEFT_MODULE_STEER_ENCODER = 10;
-		public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(18);
+		public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(319);
 		// Back Right
-		public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 2;
-		public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 1;
-		public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 11;
-		public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(306);
+		public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 5;
+		public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 7;
+		public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 8;
+		public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(154);
 	}
-
 	public static final class DrivetrainSpecs {
 		// The left-to-right distance between the drivetrain wheels measured from center
 		// to center.
-		public static final double DRIVETRAIN_TRACKWIDTH_METERS = Units.inchesToMeters(20.75);
+		public static final double DRIVETRAIN_TRACKWIDTH_METERS = Units.inchesToMeters(15.75);
 		// The front-to-back distance between the drivetrain wheels measured from center
 		// to center.
-		public static final double DRIVETRAIN_WHEELBASE_METERS = Units.inchesToMeters(20.75);
+		public static final double DRIVETRAIN_WHEELBASE_METERS = Units.inchesToMeters(29.75);
 
 		public static final double MAX_VOLTAGE = 12.0;
 

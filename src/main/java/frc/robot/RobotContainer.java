@@ -1,10 +1,5 @@
 package frc.robot;
 
-import com.pathplanner.lib.*;
-import com.pathplanner.lib.path.PathConstraints;
-import com.pathplanner.lib.path.PathPlannerTrajectory;
-import com.pathplanner.lib.util.PIDConstants;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -18,9 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import static frc.robot.util.Constants.DrivetrainSpecs.*;
 import static frc.robot.util.Constants.OperatorConstants.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import com.swervedrivespecialties.swervelib.*;
 
 import frc.robot.commands.BalanceStation;
 import frc.robot.commands.DriveControl;
@@ -41,7 +34,7 @@ public class RobotContainer {
 
 	public RobotContainer() {
 		drivetrain.setDefaultCommand(new DriveControl(
-				() -> -modifyAxis(joystick.getX(), joystick.getThrottle()) * MAX_VELOCITY_METERS_PER_SECOND,
+				() -> -modifyAxis(-joystick.getX(), joystick.getThrottle()) * MAX_VELOCITY_METERS_PER_SECOND,
 				() -> -modifyAxis(joystick.getY(), joystick.getThrottle()) * MAX_VELOCITY_METERS_PER_SECOND,
 				() -> -modifyAxis(joystick.getTwist(), joystick.getThrottle())
 						* MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));
@@ -73,8 +66,7 @@ public class RobotContainer {
 		new Trigger(joystick::getTrigger).whileTrue(new InstantCommand(drivetrain::zeroGyroscope));
 		new Trigger(() -> joystick.getRawButton(2)).whileTrue(new BalanceStation());
 		new Trigger(() -> joystick.getRawButton(3)).whileTrue(
-				new InstantCommand(() -> drivetrain.drive(new ChassisSpeeds(SmartDashboard.getNumber("vx", 0),
-						SmartDashboard.getNumber("vy", 0), SmartDashboard.getNumber("omega", 0)))));
+				new InstantCommand(() -> drivetrain.drive(new ChassisSpeeds(joystick.getX(),joystick.getY(),joystick.getTwist()))));
 
 		// new Trigger(joystick::getTrigger).whileTrue(new DriveToAprilTag(1));
 		// new Trigger(joystick::getTrigger).whileTrue(new RotateToAngle(90, false));

@@ -5,9 +5,9 @@ import frc.robot.subsystems.Limelight;
 import frc.robot.util.Constants.LimelightPipeline;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 
-public class DriveToAprilTag extends CommandBase {
+public class DriveToAprilTag extends Command {
 
 	Drivetrain drivetrain;
 	Limelight limelight;

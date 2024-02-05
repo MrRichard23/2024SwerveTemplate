@@ -1,0 +1,57 @@
+package frc.robot.subsystems;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import com.ctre.phoenix6.hardware.ParentDevice;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.Orchestra;
+
+import edu.wpi.first.wpilibj.Joystick;
+
+public class Musica{
+    private static Musica musica;
+
+    Orchestra theMusic;
+
+    TalonFX falcon1;
+    TalonFX falcon2;
+    TalonFX falcon3;
+    TalonFX falcon4;
+    String musicFile;
+    Joystick rightJoystick;
+
+    public Musica(TalonFX falcon1Robot, TalonFX falcon2Robot, TalonFX falcon3Robot, TalonFX falcon4Robot, String musicFileName, Joystick theRightJoystick){
+        falcon1 = falcon1Robot;
+        falcon2 = falcon2Robot;
+        falcon3 = falcon3Robot;
+        falcon4 = falcon4Robot;
+        musicFile = musicFileName;
+        rightJoystick = theRightJoystick;
+
+        Collection<ParentDevice> _instruments;
+        _instruments.add(falcon1);
+        _instruments.add(falcon2);
+        _instruments.add(falcon3);
+        _instruments.add(falcon4);
+        theMusic = new Orchestra(_instruments);
+
+        theMusic.loadMusic(musicFile);
+    }
+
+    public void PlayMusic(){
+    
+        // if(rightJoystick.getRawButton(3)){
+            theMusic.play();
+        // }
+        
+    }
+
+    public static Musica getInstance(drivetrain.getMotpo) {
+		if (musica == null) {
+			musica = new Musica();
+		}
+		return musica;
+	}
+
+}
