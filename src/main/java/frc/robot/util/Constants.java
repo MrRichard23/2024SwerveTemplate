@@ -61,6 +61,9 @@ public final class Constants {
 
 		public static final double DISTANCE_AWAY = Units.inchesToMeters(43);
 
+		public static final double ROBOT_TO_FIELDX = 0;
+    	public static final double ROBOT_TO_FIELDY = 0;
+
 	}
 
 	public enum LimelightPipeline {

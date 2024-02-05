@@ -1,7 +1,8 @@
 package frc.robot.subsystems;
 
 import frc.robot.util.Constants.LimelightPipeline;
-
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -72,6 +73,10 @@ public class Limelight extends SubsystemBase {
 	public Number[] getPose() {
 		return llTable.getEntry("botpose").getNumberArray(null);
 	}
+
+	public Pose2d getLimelightPose() {
+		return new Pose2d(getX(), getY(), new Rotation2d(getYaw()));
+	  }
 
 	public static Limelight getInstance() {
 		if (limelight == null) {

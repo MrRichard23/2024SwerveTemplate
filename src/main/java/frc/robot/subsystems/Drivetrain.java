@@ -31,8 +31,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Drivetrain extends SubsystemBase {
 	private final AHRS navX;
 
-	public final SwerveDriveKinematics driveKinematics;
-	private SwerveDriveOdometry driveOdometry;
+  public final SwerveDriveKinematics driveKinematics;
 
 	private final SwerveModule frontLeftModule;
 	private final SwerveModule frontRightModule;
@@ -132,8 +131,6 @@ public class Drivetrain extends SubsystemBase {
 		// Rotation2d.fromDegrees(navX.getFusedHeading()),
 		// getModulePositions());
 
-		driveOdometry = new SwerveDriveOdometry(driveKinematics, getGyroscopeRotation(), getModulePositions());
-
 		xController = new PIDController(0.8, 0, 0);
 		xController.setSetpoint(-3);
 		xController.setTolerance(0.1);
@@ -183,39 +180,14 @@ public class Drivetrain extends SubsystemBase {
 		return navX.getAngle();
 	}
 
-	/**
-	 * @return SwerveDriveKinematics
-	 */
-	public SwerveDriveKinematics getDriveKinematics() {
-		return driveKinematics;
-	}
-
-	/**
-	 * @return Pose2d
-	 */
-	public Pose2d getPose() {
-		return driveOdometry.getPoseMeters();
-	}
-
-	/**
-	 * @param pose
-	 */
-	public void resetPose(Pose2d pose) {
-		// driveOdometry.resetPosition(Rotation2d.fromDegrees(navX.getFusedHeading()),
-		// getModulePositions(),
-		// pose);
-
-		// //todo: try this
-		// /*
-		driveOdometry.resetPosition(getGyroscopeRotation(), getModulePositions(), pose);
-
-		// */
-	}
-
 	public SwerveModulePosition[] getModulePositions() {
 		return new SwerveModulePosition[]{frontLeftModule.getPosition(), frontRightModule.getPosition(),
 				backLeftModule.getPosition(), backRightModule.getPosition()};
 	}
+
+  public SwerveDriveKinematics getDriveKinematics() {
+    return driveKinematics;
+  }
 
 	public AHRS getNavX() {
 		return navX;
@@ -266,8 +238,6 @@ public class Drivetrain extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		driveOdometry.update(Rotation2d.fromDegrees(navX.getFusedHeading()), getModulePositions());
-
 		SwerveModuleState[] states = driveKinematics.toSwerveModuleStates(chassisSpeeds);
 		setModuleStates(states);
 
