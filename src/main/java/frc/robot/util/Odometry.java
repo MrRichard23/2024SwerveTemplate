@@ -18,7 +18,7 @@ public class Odometry {
     private Limelight limelight;
 
     public final SwerveDriveKinematics driveKinematics;
-	private SwerveDriveOdometry odometry;
+	  private SwerveDriveOdometry odometry;
 
     public Odometry(){
         drivetrain = Drivetrain.getInstance();

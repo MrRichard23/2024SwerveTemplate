@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-
 import static frc.robot.util.Constants.DrivetrainSpecs.*;
 import static frc.robot.util.Constants.OperatorConstants.*;
 
@@ -30,14 +29,15 @@ public class RobotContainer {
 	// private final XboxController xboxController = new
 	// XboxController(CONTROLLER_PORT);
 	private final Joystick joystick = new Joystick(JOYSTICK_PORT);
+	private final Joystick joystick1 = new Joystick(0);
 
 	private DigitalInput sensor;
 
 	public RobotContainer() {
 		drivetrain.setDefaultCommand(new DriveControl(
-				() -> -modifyAxis(-joystick.getX(), joystick.getThrottle()) * MAX_VELOCITY_METERS_PER_SECOND,
-				() -> -modifyAxis(joystick.getY(), joystick.getThrottle()) * MAX_VELOCITY_METERS_PER_SECOND,
-				() -> -modifyAxis(joystick.getTwist(), joystick.getThrottle())
+				() -> -modifyAxis(-joystick.getX(), joystick1.getThrottle()) * MAX_VELOCITY_METERS_PER_SECOND,
+				() -> -modifyAxis(joystick.getY(), joystick1.getThrottle()) * MAX_VELOCITY_METERS_PER_SECOND,
+				() -> -modifyAxis(joystick.getTwist(), joystick1.getThrottle())
 						* MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));
 
 		configureButtonBindings();
@@ -54,6 +54,11 @@ public class RobotContainer {
 		SmartDashboard.putNumber("roll", drivetrain.getNavX().getRoll());
 
 		SmartDashboard.putBoolean("ir sensor", sensor.get());
+
+		SmartDashboard.putNumber("DistanceX", limelight.getX());
+		SmartDashboard.putNumber("DistanceY", limelight.getY());
+		SmartDashboard.putNumber("DistanceZ", limelight.getZ());
+		SmartDashboard.putNumber("DistanceYaw", limelight.getYaw());
 
 	}
 
