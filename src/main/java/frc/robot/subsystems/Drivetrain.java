@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import static frc.robot.util.Constants.DrivetrainMotors.*;
 import static frc.robot.util.Constants.DrivetrainSpecs.*;
+import frc.robot.util.Odometer;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -17,6 +18,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.Odometry;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -27,6 +29,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 
 public class Drivetrain extends SubsystemBase {
 	private final AHRS navX;
@@ -38,6 +41,8 @@ public class Drivetrain extends SubsystemBase {
 	private final SwerveModule backLeftModule;
 	private final SwerveModule backRightModule;
 
+	private TalonFX talon1;
+
 	private ChassisSpeeds chassisSpeeds;
 
 	private PIDController xController;
@@ -47,11 +52,14 @@ public class Drivetrain extends SubsystemBase {
 	private PIDController rotateToAngleController;
 
 	private PIDController chargeStationController;
+	// private SwerveDrivePoseEstimator odometry;
 
 	private static Drivetrain drivetrain;
 	public TalonFX reference;
 	
 	public Drivetrain() {
+		// talon1 = TalonFX(1, );
+
 		reference = new TalonFX(FRONT_LEFT_MODULE_STEER_MOTOR);
 		navX = new AHRS(SerialPort.Port.kMXP);
 		
@@ -150,6 +158,8 @@ public class Drivetrain extends SubsystemBase {
 		chargeStationController = new PIDController(0.03, 0, 0);
 		chargeStationController.setTolerance(0.5);
 		chargeStationController.setSetpoint(0);
+		// odometry = new SwerveDrivePoseEstimator(driveKinematics, navX.getRotation2d(), getModulePositions(), new Pose2d(new Translation2d(0,0), new Rotation2d(0)));
+
 	}
 
 	public PIDController getChargeStationController() {
@@ -242,10 +252,13 @@ public class Drivetrain extends SubsystemBase {
 		setModuleStates(states);
 
 		SmartDashboard.putNumber("referenceMotorInput", reference.get());
-
 		// Shuffleboard.getTab("dt").add(drivetrain);
 		
 	}
+
+	// public TalonFX getTalon1() {
+
+	// }
 
 	public static Drivetrain getInstance() {
 		if (drivetrain == null) {

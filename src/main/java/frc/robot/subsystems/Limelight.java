@@ -9,12 +9,15 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import edu.wpi.first.math.estimator.PoseEstimator;
+
 public class Limelight extends SubsystemBase {
 	private static Limelight limelight;
 	private static NetworkTable llTable;
 
 	private Limelight() {
 		llTable = NetworkTableInstance.getDefault().getTable("limelight");
+		
 	}
 
 
@@ -95,7 +98,7 @@ public class Limelight extends SubsystemBase {
 		return (double) getCamTran()[5];
 	}
 
-	public Pose2d getPose() {
+	public Pose2d getFieldPose() {
 		double[] poseNum = new double[6];
 		
 		if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
@@ -110,6 +113,13 @@ public class Limelight extends SubsystemBase {
 	public Pose2d getLimelightPose() {
 		return new Pose2d(getX(), getY(), new Rotation2d(getYaw()));
 	  }
+	  
+
+	@Override
+	public void periodic() {
+		// TODO Auto-generated method stub
+		SmartDashboard.putNumber("limelightOdometry", (Double) getX());
+	}
 
 	public static Limelight getInstance() {
 		if (limelight == null) {

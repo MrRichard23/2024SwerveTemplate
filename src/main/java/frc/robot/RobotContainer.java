@@ -15,6 +15,7 @@ import static frc.robot.util.Constants.OperatorConstants.*;
 
 import java.util.HashMap;
 
+import frc.robot.util.Odometer;
 import frc.robot.commands.BalanceStation;
 import frc.robot.commands.DriveControl;
 import frc.robot.commands.DriveToAprilTag;
@@ -25,22 +26,26 @@ public class RobotContainer {
 	private final Drivetrain drivetrain = Drivetrain.getInstance();
 	// private final Auto auto = Auto.getInstance();
 	private final Limelight limelight = Limelight.getInstance();
+	private final Odometer odometer = Odometer.getInstance();
 
 	// private final XboxController xboxController = new
 	// XboxController(CONTROLLER_PORT);
 	private final Joystick joystick = new Joystick(JOYSTICK_PORT);
-	private final Joystick joystick1 = new Joystick(0);
+	private final Joystick throttle = new Joystick(THROTTLE_PORT);
+	// private final Odemetry1 odometry = new Odometry1();
 
 	private DigitalInput sensor;
 
+
 	public RobotContainer() {
 		drivetrain.setDefaultCommand(new DriveControl(
-				() -> -modifyAxis(-joystick.getX(), joystick1.getThrottle()) * MAX_VELOCITY_METERS_PER_SECOND,
-				() -> -modifyAxis(joystick.getY(), joystick1.getThrottle()) * MAX_VELOCITY_METERS_PER_SECOND,
-				() -> -modifyAxis(joystick.getTwist(), joystick1.getThrottle())
+				() -> -modifyAxis(-joystick.getX(), throttle.getZ()) * MAX_VELOCITY_METERS_PER_SECOND,
+				() -> -modifyAxis(joystick.getY(), throttle.getZ()) * MAX_VELOCITY_METERS_PER_SECOND,
+				() -> -modifyAxis(joystick.getTwist(), throttle.getZ())
 						* MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));
 
 		configureButtonBindings();
+		
 
 		sensor = new DigitalInput(0);
 		// drivetrain.zeroGyroscope();
@@ -76,6 +81,9 @@ public class RobotContainer {
 		// new Trigger(joystick::getTrigger).whileTrue(new DriveToAprilTag(1));
 		// new Trigger(joystick::getTrigger).whileTrue(new RotateToAngle(90, false));
 
+		new Trigger(() -> joystick.getRawButton(6)).whileTrue(new InstantCommand(() -> odometer.resetOdometry()));
+
+		new Trigger(() -> joystick.getRawButton(4)).whileTrue(new InstantCommand(() -> odometer.resetOdometry(limelight.getFieldPose()), limelight));
 	}
 
 	public Command getAutonomousCommand() {
@@ -135,7 +143,7 @@ public class RobotContainer {
 		// takes the throttle value and takes it from [-1, 1] to [0.2, 1], and
 		// multiplies it by the
 		// value
-		return value * (throttleValue * -0.4 + 0.6);
+		return value * (throttleValue * -0.45 + 0.55);
 	}
 
 }

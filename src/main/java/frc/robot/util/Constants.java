@@ -9,7 +9,8 @@ import edu.wpi.first.math.util.Units;
 
 public final class Constants {
 	public static final class OperatorConstants {
-		public static final int JOYSTICK_PORT = 1;
+		public static final int JOYSTICK_PORT = 0;
+		public static final int THROTTLE_PORT = 1;
 		public static final int CONTROLLER_PORT = 2;
 
 		public static final int RESET_GYRO_BUTTON = 1; // on joystick 0
@@ -64,6 +65,7 @@ public final class Constants {
 		public static final double ROBOT_TO_FIELDX = 0;
     	public static final double ROBOT_TO_FIELDY = 0;
 
+		public static final double ALLOWED_POSE_ERROR_IN_METERS = 1;
 	}
 
 	public enum LimelightPipeline {
